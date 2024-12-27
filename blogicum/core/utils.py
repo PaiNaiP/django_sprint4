@@ -50,3 +50,12 @@ def get_post_data(post_data):
         category__is_published=True,
     )
     return post
+
+def get_paginated_posts(query_set, page_number, items_per_page):
+    """Вернуть страницу пагинатора с опубликованными постами."""
+    paginator = Paginator(query_set, items_per_page)
+    try:
+        page = paginator.get_page(page_number)
+    except EmptyPage:
+        page = paginator.get_page(1)
+    return page
