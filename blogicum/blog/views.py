@@ -166,20 +166,6 @@ class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
-    """Создание поста.
-
-    Атрибуты:
-        - model: Класс модели, используемой для создания поста.
-        - form_class: Класс формы, используемый для создания поста.
-        - template_name: Имя шаблона, используемого для отображения страницы.
-
-    Методы:
-        - form_valid(form): Проверяет, является ли форма допустимой,
-        и устанавливает автора поста.
-        - get_success_url(): Возвращает URL-адрес для перенаправления после
-        успешного создания поста.
-    """
-
     model = Post
     form_class = PostEditForm
     template_name = "blog/create.html"
@@ -194,20 +180,6 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
-    """Редактирование поста.
-
-    Атрибуты:
-        - model: Класс модели, используемой для редактирования поста.
-        - form_class: Класс формы, используемый для редактирования поста.
-        - template_name: Имя шаблона, используемого для отображения страницы.
-
-    Методы:
-        - dispatch(request, *args, **kwargs): Проверяет, является ли
-        пользователь автором поста.
-        - get_success_url(): Возвращает URL-адрес перенаправления после
-        успешного редактирования поста.
-    """
-
     model = Post
     form_class = PostEditForm
     template_name = "blog/create.html"
