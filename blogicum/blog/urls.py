@@ -21,7 +21,7 @@ urlpatterns = [
     # Для владельца страницы присутствует меню перехода на страницу
     # редактированию профиля и страницу смены пароля.
     path(
-        "profile/<slug:username>/",
+        "profile/<str:username>/",
         views.UserPostsListView.as_view(),
         name="profile",
     ),
