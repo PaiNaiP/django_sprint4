@@ -27,7 +27,7 @@ urlpatterns = [
     ),
     # Пост.
     path(
-        "posts/<int:pk>/",
+        "posts/<int:post_id>/",
         views.PostDetailView.as_view(),
         name="post_detail",
     ),
@@ -45,31 +45,31 @@ urlpatterns = [
     ),
     # Редактировать пост.
     path(
-        "posts/<int:pk>/edit/",
+        "posts/<int:post_id>/edit/",
         views.PostUpdateView.as_view(),
         name="edit_post",
     ),
     # Удалить пост.
     path(
-        "posts/<int:pk>/delete/",
+        "posts/<int:post_id>/delete/",
         views.PostDeleteView.as_view(),
         name="delete_post",
     ),
     # Добавить комментарий.
     path(
-        "posts/<int:pk>/comment/",
+        "posts/<int:post_id>/comment/",
         views.CommentCreateView.as_view(),
         name="add_comment",
     ),
     # Редактировать комментарий.
     path(
-        "posts/<int:pk>/edit_comment/<int:comment_pk>/",
+        "posts/<int:post_id>/edit_comment/<int:comment_id>/",
         views.CommentUpdateView.as_view(),
         name="edit_comment",
     ),
     # Удалить комментарий
     path(
-        "posts/<int:pk>/delete_comment/<int:comment_pk>/",
+        "posts/<int:post_id>/delete_comment/<int:comment_id>/",
         views.CommentDeleteView.as_view(),
         name="delete_comment",
     ),
