@@ -1,7 +1,5 @@
 from django import forms
-
 from .models import User, Post, Comment
-
 
 class UserEditForm(forms.ModelForm):
     """Форма редактирования информации о пользователе."""
@@ -10,18 +8,18 @@ class UserEditForm(forms.ModelForm):
         model = User
         fields = ("first_name", "last_name", "username", "email")
 
-
 class PostEditForm(forms.ModelForm):
     """Форма редактирования поста."""
 
     class Meta:
         model = Post
+        fields = ("text", "is_published", "pub_date")
         exclude = ("author", "created_at")
         widgets = {
-            "text": forms.Textarea({"rows": "5"}),
+            "text": forms.Textarea(attrs={"rows": "5"}),
             "pub_date": forms.DateTimeInput(attrs={"type": "datetime-local"}),
+            "is_published": forms.CheckboxInput(),
         }
-
 
 class CommentEditForm(forms.ModelForm):
     """Форма редактирования комментария."""
@@ -30,5 +28,5 @@ class CommentEditForm(forms.ModelForm):
         model = Comment
         fields = ("text",)
         widgets = {
-            "text": forms.Textarea({"rows": "3"})
+            "text": forms.Textarea(attrs={"rows": "3"})
         }
