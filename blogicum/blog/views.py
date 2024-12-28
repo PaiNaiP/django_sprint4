@@ -47,8 +47,16 @@ class PostDetailView(DetailView):
 class MainPostListView(ListView):
     model = Post
     template_name = "blog/index.html"
-    queryset = post_published_query()
     paginate_by = 10
+
+    def get_queryset(self):
+        return filter_and_annotate_posts().order_by(*Post._meta.ordering)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        page_number = self.request.GET.get('page', 1)
+        context['posts'] = get_paginated_posts(self.get_queryset(), page_number, self.paginate_by)
+        return context
 
 
 class CategoryPostListView(MainPostListView):
