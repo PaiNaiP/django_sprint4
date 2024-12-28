@@ -4,6 +4,12 @@ from django.shortcuts import get_object_or_404
 from blog.models import Post
 from django.utils import timezone
 
+from django.db.models import Count, Q
+
+def filter_and_annotate_posts(queryset, filter_published=True):
+    if filter_published:
+        queryset = queryset.filter(is_published=True, pub_date__lte=now(), category__is_published=True)
+    return queryset.annotate(comment_count=Count('comment'))
 
 def post_all_query():
     """Вернуть все посты."""
