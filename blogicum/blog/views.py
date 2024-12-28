@@ -22,6 +22,45 @@ from django.views.generic import DetailView
 from .models import Post
 from .utils import post_all_query, post_published_query
 
+class PostCreateView(CreateView):
+    model = Post
+    form_class = PostEditForm
+    template_name = "blog/create.html"
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(request.GET or None)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST or None)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect('blog:post_detail', pk=post.pk)
+        return render(request, self.template_name, {'form': form})
+
+class PostUpdateView(UpdateView):
+    model = Post
+    form_class = PostEditForm
+    template_name = "blog/create.html"
+
+    def get_object(self):
+        return get_object_or_404(Post, pk=self.kwargs["pk"], author=self.request.user)
+
+    def get(self, request, *args, **kwargs):
+        post = self.get_object()
+        form = self.form_class(instance=post)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        post = self.get_object()
+        form = self.form_class(request.POST or None, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('blog:post_detail', pk=post.pk)
+        return render(request, self.template_name, {'form': form})
+        
 class PostDetailView(DetailView):
    
     model = Post
