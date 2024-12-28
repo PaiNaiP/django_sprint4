@@ -17,6 +17,33 @@ from .models import Post, User, Category, Comment
 from .forms import UserEditForm, PostEditForm, CommentEditForm
 
 
+from django.shortcuts import get_object_or_404
+from django.views.generic import DetailView
+from .models import Post
+from .utils import post_all_query, post_published_query
+
+class PostDetailView(DetailView):
+   
+    model = Post
+    template_name = "blog/detail.html"
+    post_data = None
+
+    def get_object(self, queryset=None):
+        # Первый вызов get_object_or_404 для извлечения поста по ключу из полной таблицы
+        post = get_object_or_404(post_all_query(), pk=self.kwargs["pk"])
+
+        # Проверка авторства
+        if post.author != self.request.user:
+            # Второй вызов get_object_or_404 для извлечения поста из набора опубликованных постов
+            post = get_object_or_404(post_published_query(), pk=self.kwargs["pk"])
+
+        return post
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["comments"] = self.object.comments.all().select_related("author")
+        return context
+
 class MainPostListView(ListView):
     model = Post
     template_name = "blog/index.html"
